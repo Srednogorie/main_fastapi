@@ -19,7 +19,7 @@ from app.models.user import User, get_user_db, get_access_token_db
 
 SECRET = "SECRET"
 
-
+# Key is invalid
 google_oauth_client = GoogleOAuth2(
     os.getenv("GOOGLE_OAUTH_CLIENT_ID", "583488678539-5e5jjs3jqcneom71e6qejhdrs08gl5pd.apps.googleusercontent.com"),
     os.getenv("GOOGLE_OAUTH_CLIENT_SECRET", "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"),
