@@ -7,6 +7,7 @@ from fastapi import FastAPI, Depends, WebSocket, WebSocketDisconnect, Body
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
+# from env_settings import Settings
 from .models import User
 from .routers import foo, mongo
 from fastapi.exceptions import HTTPException as StarletteHTTPException

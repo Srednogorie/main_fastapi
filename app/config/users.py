@@ -15,14 +15,15 @@ from httpx_oauth.clients.google import GoogleOAuth2
 from sib_api_v3_sdk.rest import ApiException
 from starlette import status
 
+from app import settings
 from app.models.user import User, get_user_db, get_access_token_db
 
 SECRET = "SECRET"
 
 # Key is invalid
 google_oauth_client = GoogleOAuth2(
-    os.getenv("GOOGLE_OAUTH_CLIENT_ID", "583488678539-5e5jjs3jqcneom71e6qejhdrs08gl5pd.apps.googleusercontent.com"),
-    os.getenv("GOOGLE_OAUTH_CLIENT_SECRET", "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"),
+    os.getenv("GOOGLE_OAUTH_CLIENT_ID", settings.google_oauth_client_id),
+    os.getenv("GOOGLE_OAUTH_CLIENT_SECRET", settings.google_oauth_client_secret),
 )
 
 
@@ -38,7 +39,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     ):
         configuration = sib_api_v3_sdk.Configuration()
         # Key is invalid
-        configuration.api_key['api-key'] = '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'
+        configuration.api_key['api-key'] = settings.sib_api_key
 
         api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
         subject = "Reset your password"
@@ -61,7 +62,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     ):
         configuration = sib_api_v3_sdk.Configuration()
         # Key is invalid
-        configuration.api_key['api-key'] = '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'
+        configuration.api_key['api-key'] = settings.sib_api_key
 
         api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
         subject = "Verify your email"
