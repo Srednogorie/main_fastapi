@@ -3,14 +3,15 @@
 #### docker run --name mongo_fastapi -d -p 27017:27017 mongo
 
 ### Project setup
-#### Run tests - pytest
-#### Run app - uvicorn app.main:app --reload
 #### Initialize alembic - alembic init alembic
 #### In alembic.ini change with your db url - sqlalchemy.url = postgresql://postgres:postgres@localhost:5432/fastapi
 #### In env.py change - target_metadata = [Base.metadata]
 #### To generate migration - alembic revision --autogenerate -m "First commit" --rev-id=<your_identifier>
 #### To run migration - alembic upgrade head
 #### To remove all migrations - alembic downgrade base
+#### Run tests - pytest
+#### Run app - uvicorn app.main:app --reload
+#### Visit http://127.0.0.1:8000/docs
 
 
 ### Shell setup
