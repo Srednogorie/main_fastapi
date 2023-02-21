@@ -1,7 +1,7 @@
 ### Databases setup
 #### docker run --name postges_fastapi -e POSTGRES_PASSWORD=postgresd -p 5432:5432 -d postgres
 #### docker run --name mongo_fastapi -d -p 27017:27017 mongo
-
+##
 ### Project setup
 #### Initialize alembic - alembic init alembic
 #### In alembic.ini change with your db url - sqlalchemy.url = postgresql://postgres:postgres@localhost:5432/fastapi
@@ -12,8 +12,7 @@
 #### Run tests - pytest
 #### Run app - uvicorn app.main:app --reload
 #### Visit http://127.0.0.1:8000/docs
-
-
+##
 ### Shell setup
 #### from sqlalchemy import create_engine
 #### engine = create_engine("postgresql://postgres:postgres@127.0.0.1:5432/fastapi")
