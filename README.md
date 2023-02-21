@@ -3,6 +3,7 @@
 #### docker run --name mongo_fastapi -d -p 27017:27017 mongo
 ##
 ### Project setup
+#### In the root directory create a file called env_settings.py. Create class called Settings and inherit from Pydantic's BaseSettings. Create the following variables - google_oauth_client_id, google_oauth_client_secret, sib_api_key. Tge first two will be used for Google social authentication, the third is the SendInBlue key, that's for sending various emails around registration and account management.
 #### Initialize alembic - alembic init alembic
 #### In alembic.ini change with your db url - sqlalchemy.url = postgresql://postgres:postgres@localhost:5432/fastapi
 #### In env.py change - target_metadata = [Base.metadata]
