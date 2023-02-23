@@ -15,13 +15,5 @@
 #### Visit http://127.0.0.1:8000/docs
 ##
 ### Shell setup
-#### from sqlalchemy import create_engine
-#### engine = create_engine("postgresql://postgres:postgres@127.0.0.1:5432/fastapi")
-#### from sqlalchemy.orm import sessionmaker
-#### Session = sessionmaker(bind=engine, future=True)
-#### session = Session()
-#### import sys
-#### sys.path.append("path_to_project_root_directory")
-#### from app.models.foo import *
-#### from sqlalchemy import select
+#### python -i sqlalchemy_shell_setup.py
 #### users = session.execute(select(User))
