@@ -6,6 +6,7 @@
         "httpx",
         "joinedload",
         "loguru",
+        "mangum",
         "psycopg",
         "pydantic",
         "sessionmaker",
