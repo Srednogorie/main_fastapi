@@ -11,4 +11,4 @@ WORKDIR /var/task/
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
-CMD ["app.app.handler"]
+CMD ["app.main.handler"]
