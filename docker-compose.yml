@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  development:
+    build:
+      context: .
+      dockerfile: ./local.Dockerfile
+    environment:
+      - LOG_LEVEL=value
+    secrets:
+      - key
+      - cert
+    env_file:
+      - .env.dev
+    volumes:
+      - ./:/var/task
+    command: >
+      sh -c "
+      python /var/lang/lib/python3.11/site-packages/debugpy --wait-for-client --listen 0.0.0.0:5678 
+      -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload 
+      --ssl-keyfile=/run/secrets/key 
+      --ssl-certfile=/run/secrets/cert
+      "
+    ports:
+      - 8000:8000
+      - 5678:5678
+    tty: true
+    stdin_open: true
+    entrypoint: [""]
+
+secrets:
+  key:
+    file: ~/Development/ssl/localhost_certs/local-docker-key.pem
+  cert:
+    file: ~/Development/ssl/localhost_certs/local-docker-cert.pem

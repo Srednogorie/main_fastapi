@@ -1,0 +1,17 @@
+{
+    "cSpell.words": [
+        "asyncpg",
+        "debugpy",
+        "fastapi",
+        "httpx",
+        "joinedload",
+        "loguru",
+        "psycopg",
+        "pydantic",
+        "sessionmaker",
+        "sqlalchemy",
+        "starlette",
+        "UUIDID",
+        "uvicorn"
+    ]
+}
