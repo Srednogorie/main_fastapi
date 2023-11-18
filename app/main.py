@@ -7,7 +7,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from starlette_csrf import CSRFMiddleware
-from magnum import Magnum
+from mangum import Mangum
 
 from .models import User
 from fastapi.exceptions import HTTPException as StarletteHTTPException
@@ -25,7 +25,7 @@ from .config.users import (
 )
 
 app = FastAPI()
-handler = Magnum(app)
+handler = Mangum(app)
 database = get_db()
 
 origins = ["http://localhost:3000"]
