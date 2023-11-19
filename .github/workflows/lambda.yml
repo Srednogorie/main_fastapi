@@ -1,0 +1,161 @@
+Description: ""
+Resources:
+    LambdaFunction:
+        Type: "AWS::Lambda::Function"
+        Properties:
+            Description: ""
+            Environment: 
+                Variables: 
+                    SIB_API_KEY: "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"
+                    AUTH_VERIFICATION_SECRET: "j1k8%&pm222l=fb@!85u#4xg5m9sp+v#@=ueup&o+h^u4cw0x6"
+                    GOOGLE_OAUTH_CLIENT_ID: "583488678539-lif9k4m7t4g4ntovdb2hgofenpv8cprd.apps.googleusercontent.com"
+                    DB_PORT: "5432"
+                    DB_USER: "postgres"
+                    GOOGLE_OAUTH_CLIENT_SECRET: "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"
+                    DB_ADDRESS: !Sub "free-tier-postgres-db.c2xeodhydktm.${AWS::Region}.rds.amazonaws.com"
+                    DB_PASSWORD: "t9PoR2uz32ij9GXIP6bvF3f"
+            FunctionName: "fast_test_cf"
+            Architectures:
+              - "x86_64"
+            Code: 
+                ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/fast_test@sha256:4eb21e8b70f42430e3ebdf78882c643ab7f70341c12ec15ad8eec09ed07dde99"
+            MemorySize: 128
+            Role: !GetAtt IAMRole.Arn
+            Timeout: 3
+            TracingConfig: 
+                Mode: "PassThrough"
+            EphemeralStorage: 
+                Size: 512
+
+    LambdaPermission:
+        Type: "AWS::Lambda::Permission"
+        Properties:
+            Action: "lambda:InvokeFunction"
+            FunctionName: !GetAtt LambdaFunction.Arn
+            Principal: "apigateway.amazonaws.com"
+            SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/"
+
+    ApiGatewayRestApi:
+        Type: "AWS::ApiGateway::RestApi"
+        Properties:
+            Name: !Ref LambdaFunction
+            ApiKeySourceType: "HEADER"
+            EndpointConfiguration: 
+                Types: 
+                  - "REGIONAL"
+
+    ApiGatewayStage:
+        Type: "AWS::ApiGateway::Stage"
+        Properties:
+            StageName: "test_stage"
+            DeploymentId: !Ref ApiGatewayDeployment
+            RestApiId: !Ref ApiGatewayRestApi
+            CacheClusterEnabled: false
+            CacheClusterSize: "0.5"
+            TracingEnabled: false
+
+    ApiGatewayDeployment:
+        Type: "AWS::ApiGateway::Deployment"
+        Properties:
+            RestApiId: !Ref ApiGatewayRestApi
+
+    ApiGatewayMethod:
+        Type: "AWS::ApiGateway::Method"
+        Properties:
+            RestApiId: !Ref ApiGatewayRestApi
+            ResourceId: "3qwblyu5w1"
+            HttpMethod: "ANY"
+            AuthorizationType: "NONE"
+            ApiKeyRequired: false
+            RequestParameters: {}
+            MethodResponses: 
+              - 
+                ResponseModels: 
+                    "application/json": !Ref ApiGatewayModel2
+                StatusCode: "200"
+            Integration: 
+                CacheNamespace: "3qwblyu5w1"
+                ContentHandling: "CONVERT_TO_TEXT"
+                IntegrationHttpMethod: "POST"
+                IntegrationResponses: 
+                  - 
+                    ResponseTemplates: {}
+                    StatusCode: "200"
+                PassthroughBehavior: "WHEN_NO_MATCH"
+                TimeoutInMillis: 29000
+                Type: "AWS_PROXY"
+                Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunction}/invocations"
+
+    ApiGatewayModel:
+        Type: "AWS::ApiGateway::Model"
+        Properties:
+            RestApiId: !Ref ApiGatewayRestApi
+            Name: "Error"
+            Description: "This is a default error schema model"
+            Schema: |
+                {
+                  "$schema" : "http://json-schema.org/draft-04/schema#",
+                  "title" : "Error Schema",
+                  "type" : "object",
+                  "properties" : {
+                    "message" : { "type" : "string" }
+                  }
+                }
+            ContentType: "application/json"
+
+    ApiGatewayModel2:
+        Type: "AWS::ApiGateway::Model"
+        Properties:
+            RestApiId: !Ref ApiGatewayRestApi
+            Name: "Empty"
+            Description: "This is a default empty schema model"
+            Schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "title" : "Empty Schema",
+                  "type" : "object"
+                }
+            ContentType: "application/json"
+
+    IAMRole:
+        Type: "AWS::IAM::Role"
+        Properties:
+            Path: "/service-role/"
+            RoleName: "fast_test-role-jikewxw1"
+            AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+            MaxSessionDuration: 3600
+            ManagedPolicyArns: 
+              - !Ref IAMManagedPolicy
+
+    IAMServiceLinkedRole:
+        Type: "AWS::IAM::ServiceLinkedRole"
+        Properties:
+            AWSServiceName: "ops.apigateway.amazonaws.com"
+            Description: "The Service Linked Role is used by Amazon API Gateway."
+
+    IAMManagedPolicy:
+        Type: "AWS::IAM::ManagedPolicy"
+        Properties:
+            ManagedPolicyName: "AWSLambdaBasicExecutionRole-b7faa8f9-6295-4b06-a068-d3bacdf11a4b"
+            Path: "/service-role/"
+            PolicyDocument: !Sub |
+                {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": "logs:CreateLogGroup",
+                            "Resource": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": [
+                                "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/fast_test:*"
+                            ]
+                        }
+                    ]
+                }
