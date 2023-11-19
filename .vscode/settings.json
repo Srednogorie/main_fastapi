@@ -14,5 +14,24 @@
         "starlette",
         "UUIDID",
         "uvicorn"
+    ],
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "key": "",
+                    "cert": "",
+                    "ca": "/Users/apple/.ssh/FrankfurtKeyPair.pem"
+                }
+            },
+            "previewLimit": 50,
+            "server": "database-1.c2xeodhydktm.eu-central-1.rds.amazonaws.com",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "rds_free_tier_postgres",
+            "database": "postgres",
+            "username": "postgres"
+        }
     ]
 }
