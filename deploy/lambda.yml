@@ -1,5 +1,7 @@
-name: Deploy Lambda
-Description: "test"
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+    Generator: "former2"
+Description: ""
 Resources:
     LambdaFunction:
         Type: "AWS::Lambda::Function"
