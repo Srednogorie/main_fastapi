@@ -1,4 +1,5 @@
-Description: ""
+name: Deploy Lambda
+Description: "test"
 Resources:
     LambdaFunction:
         Type: "AWS::Lambda::Function"
