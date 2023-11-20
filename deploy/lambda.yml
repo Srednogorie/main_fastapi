@@ -75,7 +75,7 @@ Resources:
             MethodResponses: 
               - 
                 ResponseModels: 
-                    "application/json": !Ref ApiGatewayModel2
+                    "application/json": !Ref ApiGatewayModelTwo
                 StatusCode: "200"
             Integration: 
                 CacheNamespace: "3qwblyu5w1"
