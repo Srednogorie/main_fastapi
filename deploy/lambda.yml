@@ -111,7 +111,7 @@ Resources:
         Type: "AWS::ApiGateway::Model"
         Properties:
             RestApiId: !Ref ApiGatewayRestApi
-            Name: "Empty_two"
+            Name: "EmptyTwo"
             Description: "This is a default empty schema model"
             Schema: |
                 {
