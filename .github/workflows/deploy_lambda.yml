@@ -44,7 +44,6 @@ jobs:
         template: deploy/lambda.yml
         no-fail-on-empty-changeset: "1"
         capabilities: CAPABILITY_NAMED_IAM
-        trace-warnings: 1
         # parameter-overrides: "file:///${{ github.workspace }}/parameters.json"
 #         parameter-overrides: >-
 #           AvailabilityZones=${{ github.event.inputs.region }}a,
