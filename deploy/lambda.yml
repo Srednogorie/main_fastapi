@@ -130,11 +130,11 @@ Resources:
             ManagedPolicyArns: 
               - !Ref IAMManagedPolicy
 
-    IAMServiceLinkedRole:
-        Type: "AWS::IAM::ServiceLinkedRole"
-        Properties:
-            AWSServiceName: "ops.apigateway.amazonaws.com"
-            Description: "The Service Linked Role is used by Amazon API Gateway."
+    # IAMServiceLinkedRole:
+    #     Type: "AWS::IAM::ServiceLinkedRole"
+    #     Properties:
+    #         AWSServiceName: "ops.apigateway.amazonaws.com"
+    #         Description: "The Service Linked Role is used by Amazon API Gateway."
 
     IAMManagedPolicy:
         Type: "AWS::IAM::ManagedPolicy"
