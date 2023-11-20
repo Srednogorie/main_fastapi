@@ -71,6 +71,7 @@ Resources:
             RestApiId: !Ref ApiGatewayRestApi
             ParentId: !GetAtt 
                 - ApiGatewayRestApi
+                - RootResourceId
             PathPart: '{proxy+}'
 
     ApiGatewayMethod:
