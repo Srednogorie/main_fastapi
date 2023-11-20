@@ -139,7 +139,7 @@ Resources:
     IAMManagedPolicy:
         Type: "AWS::IAM::ManagedPolicy"
         Properties:
-            ManagedPolicyName: "AWSLambdaBasicExecutionRole-b7faa8f9-6295-4b06-a068-d3bacdf11a4b"
+            ManagedPolicyName: "AWSLambdaBasicExecutionRole-fast-test"
             Path: "/service-role/"
             PolicyDocument: !Sub |
                 {
