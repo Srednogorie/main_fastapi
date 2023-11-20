@@ -65,11 +65,19 @@ Resources:
         Properties:
             RestApiId: !Ref ApiGatewayRestApi
 
+    ProxyResource:
+        Type: 'AWS::ApiGateway::Resource'
+        Properties:
+            RestApiId: !Ref ApiGatewayRestApi
+            ParentId: !GetAtt 
+                - ApiGatewayRestApi
+            PathPart: '{proxy+}'
+
     ApiGatewayMethod:
         Type: "AWS::ApiGateway::Method"
         Properties:
             RestApiId: !Ref ApiGatewayRestApi
-            ResourceId: "3qwblyu5w1"
+            ResourceId: !Ref ProxyResource
             HttpMethod: "ANY"
             AuthorizationType: "NONE"
             ApiKeyRequired: false
