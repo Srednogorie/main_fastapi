@@ -90,28 +90,28 @@ Resources:
                 Type: "AWS_PROXY"
                 Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunction}/invocations"
 
-    ApiGatewayModel:
-        Type: "AWS::ApiGateway::Model"
-        Properties:
-            RestApiId: !Ref ApiGatewayRestApi
-            Name: "Error"
-            Description: "This is a default error schema model"
-            Schema: |
-                {
-                  "$schema" : "http://json-schema.org/draft-04/schema#",
-                  "title" : "Error Schema",
-                  "type" : "object",
-                  "properties" : {
-                    "message" : { "type" : "string" }
-                  }
-                }
-            ContentType: "application/json"
+    # ApiGatewayModel:
+    #     Type: "AWS::ApiGateway::Model"
+    #     Properties:
+    #         RestApiId: !Ref ApiGatewayRestApi
+    #         Name: "Error"
+    #         Description: "This is a default error schema model"
+    #         Schema: |
+    #             {
+    #               "$schema" : "http://json-schema.org/draft-04/schema#",
+    #               "title" : "Error Schema",
+    #               "type" : "object",
+    #               "properties" : {
+    #                 "message" : { "type" : "string" }
+    #               }
+    #             }
+    #         ContentType: "application/json"
 
     ApiGatewayModel2:
         Type: "AWS::ApiGateway::Model"
         Properties:
             RestApiId: !Ref ApiGatewayRestApi
-            Name: "Empty"
+            Name: "Empty_two"
             Description: "This is a default empty schema model"
             Schema: |
                 {
