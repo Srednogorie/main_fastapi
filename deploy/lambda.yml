@@ -107,18 +107,14 @@ Resources:
     #             }
     #         ContentType: "application/json"
 
-    ApiGatewayModel2:
+    ApiGatewayModelTwo:
         Type: "AWS::ApiGateway::Model"
         Properties:
             RestApiId: !Ref ApiGatewayRestApi
             Name: "EmptyTwo"
             Description: "This is a default empty schema model"
-            Schema: |
-                {
-                  "$schema": "http://json-schema.org/draft-04/schema#",
-                  "title" : "Empty Schema",
-                  "type" : "object"
-                }
+            Schema: 
+                $schema: 'http://json-schema.org/draft-04/schema#'
             ContentType: "application/json"
 
     IAMRole:
