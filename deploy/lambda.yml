@@ -51,7 +51,6 @@ Resources:
     ApiGatewayStage:
         Type: "AWS::ApiGateway::Stage"
         Properties:
-            # StageName: "test_stage"
             DeploymentId: !Ref ApiGatewayDeployment
             RestApiId: !Ref ApiGatewayRestApi
 
