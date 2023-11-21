@@ -48,15 +48,15 @@ Resources:
                 Types: 
                   - "REGIONAL"
 
-    ApiGatewayStage:
-        Type: "AWS::ApiGateway::Stage"
-        Properties:
-            StageName: "test_stage"
-            DeploymentId: !Ref ApiGatewayDeployment
-            RestApiId: !Ref ApiGatewayRestApi
-            CacheClusterEnabled: false
-            CacheClusterSize: "0.5"
-            TracingEnabled: false
+    # ApiGatewayStage:
+    #     Type: "AWS::ApiGateway::Stage"
+    #     Properties:
+    #         StageName: "test_stage"
+    #         DeploymentId: !Ref ApiGatewayDeployment
+    #         RestApiId: !Ref ApiGatewayRestApi
+    #         CacheClusterEnabled: false
+    #         CacheClusterSize: "0.5"
+    #         TracingEnabled: false
 
     ApiGatewayDeployment:
         Type: "AWS::ApiGateway::Deployment"
@@ -74,11 +74,6 @@ Resources:
             AuthorizationType: "NONE"
             ApiKeyRequired: false
             RequestParameters: {}
-            # MethodResponses: 
-            #   - 
-            #     ResponseModels: 
-            #         "application/json": !Ref ApiGatewayModelTwo
-            #     StatusCode: "200"
             Integration:
                 CacheNamespace: "3qwblyu5w1"
                 ContentHandling: "CONVERT_TO_TEXT"
@@ -91,33 +86,6 @@ Resources:
                 TimeoutInMillis: 29000
                 Type: "AWS_PROXY"
                 Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunction}/invocations"
-
-    # ApiGatewayModel:
-    #     Type: "AWS::ApiGateway::Model"
-    #     Properties:
-    #         RestApiId: !Ref ApiGatewayRestApi
-    #         Name: "Error"
-    #         Description: "This is a default error schema model"
-    #         Schema: |
-    #             {
-    #               "$schema" : "http://json-schema.org/draft-04/schema#",
-    #               "title" : "Error Schema",
-    #               "type" : "object",
-    #               "properties" : {
-    #                 "message" : { "type" : "string" }
-    #               }
-    #             }
-    #         ContentType: "application/json"
-
-    # ApiGatewayModelTwo:
-    #     Type: "AWS::ApiGateway::Model"
-    #     Properties:
-    #         RestApiId: !Ref ApiGatewayRestApi
-    #         Name: "EmptyTwo"
-    #         Description: "This is a default empty schema model"
-    #         Schema:
-    #             $schema: 'http://json-schema.org/draft-04/schema#'
-    #         ContentType: "application/json"
 
     IAMRole:
         Type: "AWS::IAM::Role"
