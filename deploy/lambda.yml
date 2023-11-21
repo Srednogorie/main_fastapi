@@ -77,45 +77,39 @@ Resources:
                 Type: "AWS_PROXY"
                 Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunction}/invocations"
 
-    IAMRole:
-        Type: "AWS::IAM::Role"
-        Properties:
-            Path: "/service-role/"
-            RoleName: "fast_test-two-role-jikewxw1"
-            AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
-            MaxSessionDuration: 3600
-            ManagedPolicyArns: 
-              - !Ref IAMManagedPolicy
-
-    # IAMServiceLinkedRole:
-    #     Type: "AWS::IAM::ServiceLinkedRole"
+    # IAMRole:
+    #     Type: "AWS::IAM::Role"
     #     Properties:
-    #         AWSServiceName: "ops.apigateway.amazonaws.com"
-    #         Description: "The Service Linked Role is used by Amazon API Gateway."
+    #         Path: "/service-role/"
+    #         RoleName: "fast_test-two-role-jikewxw1"
+    #         AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+    #         MaxSessionDuration: 3600
+    #         ManagedPolicyArns:
+    #           - !Ref IAMManagedPolicy
 
-    IAMManagedPolicy:
-        Type: "AWS::IAM::ManagedPolicy"
-        Properties:
-            ManagedPolicyName: "AWSLambdaBasicExecutionRole-fast-test"
-            Path: "/service-role/"
-            PolicyDocument: !Sub |
-                {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Action": "logs:CreateLogGroup",
-                            "Resource": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
-                        },
-                        {
-                            "Effect": "Allow",
-                            "Action": [
-                                "logs:CreateLogStream",
-                                "logs:PutLogEvents"
-                            ],
-                            "Resource": [
-                                "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/fast_test:*"
-                            ]
-                        }
-                    ]
-                }
+    # IAMManagedPolicy:
+    #     Type: "AWS::IAM::ManagedPolicy"
+    #     Properties:
+    #         ManagedPolicyName: "AWSLambdaBasicExecutionRole-fast-test"
+    #         Path: "/service-role/"
+    #         PolicyDocument: !Sub |
+    #             {
+    #                 "Version": "2012-10-17",
+    #                 "Statement": [
+    #                     {
+    #                         "Effect": "Allow",
+    #                         "Action": "logs:CreateLogGroup",
+    #                         "Resource": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
+    #                     },
+    #                     {
+    #                         "Effect": "Allow",
+    #                         "Action": [
+    #                             "logs:CreateLogStream",
+    #                             "logs:PutLogEvents"
+    #                         ],
+    #                         "Resource": [
+    #                             "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/fast_test:*"
+    #                         ]
+    #                     }
+    #                 ]
+    #             }
