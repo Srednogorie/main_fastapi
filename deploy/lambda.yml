@@ -71,13 +71,7 @@ Resources:
             ApiKeyRequired: false
             RequestParameters: {}
             Integration:
-                # CacheNamespace: "3qwblyu5w1"
-                # ContentHandling: "CONVERT_TO_TEXT"
                 IntegrationHttpMethod: "POST"
-                # IntegrationResponses:
-                #   - 
-                #     ResponseTemplates: {}
-                #     StatusCode: "200"
                 PassthroughBehavior: "WHEN_NO_MATCH"
                 TimeoutInMillis: 29000
                 Type: "AWS_PROXY"
