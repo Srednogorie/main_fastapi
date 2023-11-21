@@ -89,7 +89,7 @@ Resources:
             Integration: 
                 CacheNamespace: "3qwblyu5w1"
                 ContentHandling: "CONVERT_TO_TEXT"
-                IntegrationHttpMethod: "GET"
+                IntegrationHttpMethod: "POST"
                 IntegrationResponses: 
                   - 
                     ResponseTemplates: {}
