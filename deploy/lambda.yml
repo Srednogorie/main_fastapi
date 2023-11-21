@@ -31,6 +31,7 @@ Resources:
             EphemeralStorage: 
                 Size: 512
 
+    # Grant to the AWS service or AWS account that invokes the function.
     LambdaPermission:
         Type: "AWS::Lambda::Permission"
         Properties:
@@ -43,7 +44,6 @@ Resources:
         Type: "AWS::ApiGateway::RestApi"
         Properties:
             Name: !Ref LambdaFunction
-            ApiKeySourceType: "HEADER"
             EndpointConfiguration: 
                 Types: 
                   - "REGIONAL"
@@ -51,12 +51,8 @@ Resources:
     ApiGatewayStage:
         Type: "AWS::ApiGateway::Stage"
         Properties:
-            StageName: "test_stage"
             DeploymentId: !Ref ApiGatewayDeployment
             RestApiId: !Ref ApiGatewayRestApi
-            CacheClusterEnabled: false
-            CacheClusterSize: "0.5"
-            TracingEnabled: false
 
     ApiGatewayDeployment:
         Type: "AWS::ApiGateway::Deployment"
