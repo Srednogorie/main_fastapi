@@ -65,12 +65,12 @@ Resources:
         Properties:
             RestApiId: !Ref ApiGatewayRestApi
 
-    ProxyResource:
-        Type: 'AWS::ApiGateway::Resource'
-        Properties:
-            RestApiId: !Ref ApiGatewayRestApi
-            ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
-            PathPart: '{proxy+}'
+    # ProxyResource:
+    #     Type: 'AWS::ApiGateway::Resource'
+    #     Properties:
+    #         RestApiId: !Ref ApiGatewayRestApi
+    #         ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+    #         PathPart: '{proxy+}'
 
     ApiGatewayMethod:
         Type: "AWS::ApiGateway::Method"
@@ -89,14 +89,14 @@ Resources:
             Integration: 
                 CacheNamespace: "3qwblyu5w1"
                 ContentHandling: "CONVERT_TO_TEXT"
-                IntegrationHttpMethod: "POST"
+                IntegrationHttpMethod: "GET"
                 IntegrationResponses: 
                   - 
                     ResponseTemplates: {}
                     StatusCode: "200"
                 PassthroughBehavior: "WHEN_NO_MATCH"
                 TimeoutInMillis: 29000
-                Type: "AWS_PROXY"
+                Type: "HTTP_PROXY"
                 Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${LambdaFunction}/invocations"
 
     # ApiGatewayModel:
