@@ -95,6 +95,15 @@ Resources:
             # RoleName: !Sub ${applicationName}-lambda-executor
             RoleName: fast-test-two-lambda-executor
 
+    # Explicit log group that refers to the Lambda function
+    LogGroup:
+        Type: AWS::Logs::LogGroup
+        DeletionPolicy: Delete
+        Properties:
+            LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
+            # Explicit retention time
+            RetentionInDays: 7
+
     # IAMRole:
     #     Type: "AWS::IAM::Role"
     #     Properties:
