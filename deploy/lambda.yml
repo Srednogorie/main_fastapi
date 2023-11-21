@@ -24,7 +24,7 @@ Resources:
             Code: 
                 ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/fast_test@sha256:4eb21e8b70f42430e3ebdf78882c643ab7f70341c12ec15ad8eec09ed07dde99"
             MemorySize: 128
-            Role: !GetAtt IAMRole.Arn
+            # Role: !GetAtt IAMRole.Arn
             Timeout: 3
             TracingConfig: 
                 Mode: "PassThrough"
