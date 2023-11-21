@@ -51,12 +51,9 @@ Resources:
     ApiGatewayStage:
         Type: "AWS::ApiGateway::Stage"
         Properties:
-            StageName: "test_stage"
+            # StageName: "test_stage"
             DeploymentId: !Ref ApiGatewayDeployment
             RestApiId: !Ref ApiGatewayRestApi
-            # CacheClusterEnabled: false
-            # CacheClusterSize: "0.5"
-            # TracingEnabled: false
 
     ApiGatewayDeployment:
         Type: "AWS::ApiGateway::Deployment"
