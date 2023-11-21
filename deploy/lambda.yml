@@ -65,13 +65,6 @@ Resources:
         Properties:
             RestApiId: !Ref ApiGatewayRestApi
 
-    # ProxyResource:
-    #     Type: 'AWS::ApiGateway::Resource'
-    #     Properties:
-    #         RestApiId: !Ref ApiGatewayRestApi
-    #         ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
-    #         PathPart: '{proxy+}'
-
     ApiGatewayMethod:
         Type: "AWS::ApiGateway::Method"
         Properties:
@@ -81,16 +74,16 @@ Resources:
             AuthorizationType: "NONE"
             ApiKeyRequired: false
             RequestParameters: {}
-            MethodResponses: 
-              - 
-                ResponseModels: 
-                    "application/json": !Ref ApiGatewayModelTwo
-                StatusCode: "200"
-            Integration: 
+            # MethodResponses: 
+            #   - 
+            #     ResponseModels: 
+            #         "application/json": !Ref ApiGatewayModelTwo
+            #     StatusCode: "200"
+            Integration:
                 CacheNamespace: "3qwblyu5w1"
                 ContentHandling: "CONVERT_TO_TEXT"
                 IntegrationHttpMethod: "POST"
-                IntegrationResponses: 
+                IntegrationResponses:
                   - 
                     ResponseTemplates: {}
                     StatusCode: "200"
@@ -116,15 +109,15 @@ Resources:
     #             }
     #         ContentType: "application/json"
 
-    ApiGatewayModelTwo:
-        Type: "AWS::ApiGateway::Model"
-        Properties:
-            RestApiId: !Ref ApiGatewayRestApi
-            Name: "EmptyTwo"
-            Description: "This is a default empty schema model"
-            Schema: 
-                $schema: 'http://json-schema.org/draft-04/schema#'
-            ContentType: "application/json"
+    # ApiGatewayModelTwo:
+    #     Type: "AWS::ApiGateway::Model"
+    #     Properties:
+    #         RestApiId: !Ref ApiGatewayRestApi
+    #         Name: "EmptyTwo"
+    #         Description: "This is a default empty schema model"
+    #         Schema:
+    #             $schema: 'http://json-schema.org/draft-04/schema#'
+    #         ContentType: "application/json"
 
     IAMRole:
         Type: "AWS::IAM::Role"
