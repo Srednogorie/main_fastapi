@@ -92,7 +92,8 @@ Resources:
                         - "sts:AssumeRole"
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-            RoleName: !Sub ${applicationName}-lambda-executor
+            # RoleName: !Sub ${applicationName}-lambda-executor
+            RoleName: fast-test-two-lambda-executor
 
     # IAMRole:
     #     Type: "AWS::IAM::Role"
