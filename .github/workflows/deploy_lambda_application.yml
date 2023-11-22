@@ -35,13 +35,24 @@ jobs:
     #     echo "Environment name: $ENVIRONMENT"
     #     echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
 
-    - name: Deploy ECR Cluster
+    - name: Create ECR repository cluster
       id: eks-cluster
       uses: aws-actions/aws-cloudformation-github-deploy@master
       with:
         name: proper-app-name-repository-cluster
         template: deploy/repository.yml
         no-fail-on-empty-changeset: "1"
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push the image to ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: proper-app-name-repository
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f prod.Dockerfile
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     # - name: Deploy Amazon EKS Cluster
     #   id: eks-cluster
