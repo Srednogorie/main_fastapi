@@ -1,4 +1,4 @@
-name: Deploy Lambda Cluster
+name: Deploy Lambda Application
 
 on:
   workflow_dispatch:
