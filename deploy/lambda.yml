@@ -1,11 +1,14 @@
 AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  ApplicationName:
+    Type: String
+    Description: Name of the application. This is consistent across the stacks.
 Resources:
     LambdaFunction:
         Type: "AWS::Lambda::Function"
         Properties:
-            Description: ""
-            Environment: 
-                Variables: 
+            Environment:
+                Variables:
                     SIB_API_KEY: "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"
                     AUTH_VERIFICATION_SECRET: "j1k8%&pm222l=fb@!85u#4xg5m9sp+v#@=ueup&o+h^u4cw0x6"
                     GOOGLE_OAUTH_CLIENT_ID: "583488678539-lif9k4m7t4g4ntovdb2hgofenpv8cprd.apps.googleusercontent.com"
@@ -14,12 +17,12 @@ Resources:
                     GOOGLE_OAUTH_CLIENT_SECRET: "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"
                     DB_ADDRESS: !Sub "free-tier-postgres-db.c2xeodhydktm.${AWS::Region}.rds.amazonaws.com"
                     DB_PASSWORD: "t9PoR2uz32ij9GXIP6bvF3f"
-            FunctionName: "fast_test_cf"
+            FunctionName: !Ref ApplicationName
             Architectures:
               - "x86_64"
             PackageType: Image
             Code: 
-                ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/fast_test@sha256:4eb21e8b70f42430e3ebdf78882c643ab7f70341c12ec15ad8eec09ed07dde99"
+                ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}"
             MemorySize: 128
             Role: !GetAtt LambdaExecutor.Arn
             Timeout: 3
@@ -76,7 +79,7 @@ Resources:
 
     LambdaExecutor:
         Type: AWS::IAM::Role
-        Description: Role to allow Lambda to basic access to VPC
+        Description: Role to allow Lambda basic access to VPC
         Properties:
             AssumeRolePolicyDocument:
                 Version: "2012-10-17"
@@ -89,8 +92,7 @@ Resources:
                         - "sts:AssumeRole"
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-            # RoleName: !Sub ${applicationName}-lambda-executor
-            RoleName: fast-test-two-lambda-executor
+            RoleName: !Sub ${ApplicationName}-lambda-executor
 
     # Explicit log group that refers to the Lambda function
     LogGroup:

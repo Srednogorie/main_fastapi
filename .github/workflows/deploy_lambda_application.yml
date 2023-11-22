@@ -7,6 +7,10 @@ on:
         description: 'AWS Region'
         required: true
         default: 'eu-central-1'
+      applicationName:
+        description: 'The name of your application will be used for naming AWS resources'
+        required: true
+        default: 'change-me'
 
 jobs:
   cluster:
@@ -22,15 +26,16 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ github.event.inputs.region}}
+        aws-region: ${{ github.event.inputs.region }}
 
     - name: Create ECR repository cluster
       id: ecr-cluster
       uses: aws-actions/aws-cloudformation-github-deploy@master
       with:
-        name: proper-app-name-repository-cluster
+        name: ${{ github.event.inputs.applicationName }}-repository-cluster
         template: deploy/repository.yml
         no-fail-on-empty-changeset: "1"
+        parameter-overrides: "file:///${{ github.workspace }}/deploy/parameters.json"
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -39,7 +44,7 @@ jobs:
     - name: Build, tag, and push the image to ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: proper-app-name-repository
+        ECR_REPOSITORY: ${{ github.event.inputs.applicationName }}
         IMAGE_TAG: latest
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f prod.Dockerfile
@@ -49,7 +54,8 @@ jobs:
       id: lambda-cluster
       uses: aws-actions/aws-cloudformation-github-deploy@master
       with:
-        name: proper-app-name-lambda-cluster
+        name: ${{ github.event.inputs.applicationName }}-lambda-cluster
         template: deploy/lambda.yml
         no-fail-on-empty-changeset: "1"
         capabilities: CAPABILITY_NAMED_IAM
+        parameter-overrides: "file:///${{ github.workspace }}/deploy/parameters.json"
