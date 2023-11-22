@@ -1,6 +1,5 @@
 [
     {
-      "applicationNameKey": "ApplicationName",
-      "applicationNameValue": "change-me"
+      "ApplicationName": "change-me"
     }
 ]
