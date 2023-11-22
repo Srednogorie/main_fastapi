@@ -1,5 +1,6 @@
 [
     {
-      "ApplicationName": "change-me"
+      "ParameterKey": "ApplicationName",
+      "ParameterValue": "change-me"
     }
 ]
