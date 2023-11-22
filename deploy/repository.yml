@@ -3,4 +3,5 @@ Resources:
     ECRRepository:
         Type: "AWS::ECR::Repository"
         Properties:
+            EmptyOnDelete: true
             RepositoryName: "proper-app-name-repository"
