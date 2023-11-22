@@ -1,0 +1,53 @@
+name: Deploy Lambda Cluster
+
+on:
+  workflow_dispatch:
+    inputs:
+      region:
+        description: 'AWS Region'
+        required: true
+        default: 'eu-central-1'
+
+jobs:
+  cluster:
+    name: Deploy stacks to AWS
+    runs-on: ubuntu-latest
+    # outputs:
+    #   env-name: ${{ steps.env-name.outputs.environment }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      id: creds
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ github.event.inputs.region}}
+
+    # - name: Configure environment name
+    #   id: env-name
+    #   env:
+    #     REPO: ${{ github.repository }}
+    #   run: |
+    #     ENVIRONMENT=`echo $REPO | tr "/" "-"`
+    #     echo "Environment name: $ENVIRONMENT"
+    #     echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
+
+    - name: Deploy ECR Cluster
+      id: eks-cluster
+      uses: aws-actions/aws-cloudformation-github-deploy@master
+      with:
+        name: proper-app-name-repository-cluster
+        template: deploy/repository.yml
+        no-fail-on-empty-changeset: "1"
+
+    # - name: Deploy Amazon EKS Cluster
+    #   id: eks-cluster
+    #   uses: aws-actions/aws-cloudformation-github-deploy@master
+    #   with:
+    #     name: my-first-cluster-with-wrong-name
+    #     template: deploy/lambda.yml
+    #     no-fail-on-empty-changeset: "1"
+    #     capabilities: CAPABILITY_NAMED_IAM
