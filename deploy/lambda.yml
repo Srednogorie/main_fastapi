@@ -22,7 +22,7 @@ Resources:
               - "x86_64"
             PackageType: Image
             Code: 
-                ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}"
+                ImageUri: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
             MemorySize: 128
             Role: !GetAtt LambdaExecutor.Arn
             Timeout: 3
