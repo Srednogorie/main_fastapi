@@ -42,9 +42,11 @@ jobs:
         name: proper-app-name-repository-cluster
         template: deploy/repository.yml
         no-fail-on-empty-changeset: "1"
+
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+
     - name: Build, tag, and push the image to ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -54,11 +56,11 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f prod.Dockerfile
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-    # - name: Deploy Amazon EKS Cluster
-    #   id: eks-cluster
-    #   uses: aws-actions/aws-cloudformation-github-deploy@master
-    #   with:
-    #     name: my-first-cluster-with-wrong-name
-    #     template: deploy/lambda.yml
-    #     no-fail-on-empty-changeset: "1"
-    #     capabilities: CAPABILITY_NAMED_IAM
+    - name: Deploy Lambda Cluster
+      id: eks-cluster
+      uses: aws-actions/aws-cloudformation-github-deploy@master
+      with:
+        name: my-first-cluster-with-wrong-name
+        template: deploy/lambda.yml
+        no-fail-on-empty-changeset: "1"
+        capabilities: CAPABILITY_NAMED_IAM
