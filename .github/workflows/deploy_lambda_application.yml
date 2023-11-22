@@ -36,7 +36,7 @@ jobs:
     #     echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
 
     - name: Create ECR repository cluster
-      id: eks-cluster
+      id: ecr-cluster
       uses: aws-actions/aws-cloudformation-github-deploy@master
       with:
         name: proper-app-name-repository-cluster
@@ -57,7 +57,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     - name: Deploy Lambda Cluster
-      id: eks-cluster
+      id: lambda-cluster
       uses: aws-actions/aws-cloudformation-github-deploy@master
       with:
         name: my-first-cluster-with-wrong-name
