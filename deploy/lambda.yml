@@ -1,22 +1,48 @@
 AWSTemplateFormatVersion: "2010-09-09"
+
 Parameters:
   ApplicationName:
     Type: String
     Description: Name of the application. This is consistent across the stacks.
+  BrevoApiKey:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/brevo/api-key
+  AuthVerificationSecret:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/auth/auth-verification-secret
+  GoogleOauthClientId:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/google-auth/google-oauth-client-id
+  GoogleOauthClientSecret:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/google-auth/google-oauth-client-secret
+  DbUser:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/db/db-user
+  DbPassword:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/db/db-password
+  DbAddress:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/db/db-address
+  DbPort:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/db/db-port
+
 Resources:
     LambdaFunction:
         Type: "AWS::Lambda::Function"
         Properties:
             Environment:
                 Variables:
-                    SIB_API_KEY: "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"
-                    AUTH_VERIFICATION_SECRET: "j1k8%&pm222l=fb@!85u#4xg5m9sp+v#@=ueup&o+h^u4cw0x6"
-                    GOOGLE_OAUTH_CLIENT_ID: "583488678539-lif9k4m7t4g4ntovdb2hgofenpv8cprd.apps.googleusercontent.com"
-                    DB_PORT: "5432"
-                    DB_USER: "postgres"
-                    GOOGLE_OAUTH_CLIENT_SECRET: "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"
-                    DB_ADDRESS: !Sub "free-tier-postgres-db.c2xeodhydktm.${AWS::Region}.rds.amazonaws.com"
-                    DB_PASSWORD: "t9PoR2uz32ij9GXIP6bvF3f"
+                    BREVO_API_KEY: !Ref BrevoApiKey
+                    AUTH_VERIFICATION_SECRET: !Ref AuthVerificationSecret
+                    GOOGLE_OAUTH_CLIENT_ID: !Ref GoogleOauthClientId
+                    GOOGLE_OAUTH_CLIENT_SECRET: !Ref GoogleOauthClientSecret
+                    DB_USER: !Ref DbUser
+                    DB_PASSWORD: !Ref DbPassword
+                    DB_ADDRESS: !Ref DbAddress
+                    DB_PORT: !Ref DbPort
             FunctionName: !Ref ApplicationName
             Architectures:
               - "x86_64"

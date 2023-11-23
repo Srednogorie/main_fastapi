@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "asyncpg",
+        "BREVO",
         "debugpy",
         "fastapi",
         "httpx",

@@ -35,7 +35,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     ):
         configuration = sib_api_v3_sdk.Configuration()
         # Key is invalid
-        configuration.api_key['api-key'] = os.getenv("SIB_API_KEY")
+        configuration.api_key['api-key'] = os.getenv("BREVO_API_KEY")
 
         api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
         subject = "Reset your password"
@@ -58,7 +58,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     ):
         configuration = sib_api_v3_sdk.Configuration()
         # Key is invalid
-        configuration.api_key['api-key'] = os.getenv("SIB_API_KEY")
+        configuration.api_key['api-key'] = os.getenv("BREVO_API_KEY")
 
         api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
         subject = "Verify your email"
