@@ -17,12 +17,12 @@ Resources:
         Properties:
             Environment:
                 Variables:
-                    BREVO_API_KEY: {{resolve:secretsmanager:default/app-config-secrets:SecretString:brevo-api-key}}
-                    AUTH_VERIFICATION_SECRET: {{resolve:secretsmanager:default/app-config-secrets:SecretString:auth-verification-secret}}
-                    GOOGLE_OAUTH_CLIENT_ID: {{resolve:secretsmanager:default/app-config-secrets:SecretString:google-oauth-client-id}}
-                    GOOGLE_OAUTH_CLIENT_SECRET: {{resolve:secretsmanager:default/app-config-secrets:SecretString:google-oauth-client-secret}}
-                    DB_USER: {{resolve:secretsmanager:default/db-credentials:SecretString:username}}
-                    DB_PASSWORD: {{resolve:secretsmanager:default/db-credentials:SecretString:password}}
+                    BREVO_API_KEY: "{{resolve:secretsmanager:default/app-config-secrets:SecretString:brevo-api-key}}"
+                    AUTH_VERIFICATION_SECRET: "{{resolve:secretsmanager:default/app-config-secrets:SecretString:auth-verification-secret}}"
+                    GOOGLE_OAUTH_CLIENT_ID: "{{resolve:secretsmanager:default/app-config-secrets:SecretString:google-oauth-client-id}}"
+                    GOOGLE_OAUTH_CLIENT_SECRET: "{{resolve:secretsmanager:default/app-config-secrets:SecretString:google-oauth-client-secret}}"
+                    DB_USER: "{{resolve:secretsmanager:default/db-credentials:SecretString:username}}"
+                    DB_PASSWORD: "{{resolve:secretsmanager:default/db-credentials:SecretString:password}}"
                     DB_ADDRESS: !Ref DbAddress
                     DB_PORT: !Ref DbPort
             FunctionName: !Ref ApplicationName
