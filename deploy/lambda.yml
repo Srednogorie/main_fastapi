@@ -4,24 +4,6 @@ Parameters:
   ApplicationName:
     Type: String
     Description: Name of the application. This is consistent across the stacks.
-  BrevoApiKey:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /default/brevo/api-key
-  AuthVerificationSecret:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /default/auth/auth-verification-secret
-  GoogleOauthClientId:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /default/google-auth/google-oauth-client-id
-  GoogleOauthClientSecret:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /default/google-auth/google-oauth-client-secret
-  DbUser:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /default/db/db-user
-  DbPassword:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /default/db/db-password
   DbAddress:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /default/db/db-address
@@ -35,12 +17,12 @@ Resources:
         Properties:
             Environment:
                 Variables:
-                    BREVO_API_KEY: !Ref BrevoApiKey
-                    AUTH_VERIFICATION_SECRET: !Ref AuthVerificationSecret
-                    GOOGLE_OAUTH_CLIENT_ID: !Ref GoogleOauthClientId
-                    GOOGLE_OAUTH_CLIENT_SECRET: !Ref GoogleOauthClientSecret
-                    DB_USER: !Ref DbUser
-                    DB_PASSWORD: !Ref DbPassword
+                    BREVO_API_KEY: {{resolve:secretsmanager:default/app-config-secrets:SecretString:brevo-api-key}}
+                    AUTH_VERIFICATION_SECRET: {{resolve:secretsmanager:default/app-config-secrets:SecretString:auth-verification-secret}}
+                    GOOGLE_OAUTH_CLIENT_ID: {{resolve:secretsmanager:default/app-config-secrets:SecretString:google-oauth-client-id}}
+                    GOOGLE_OAUTH_CLIENT_SECRET: {{resolve:secretsmanager:default/app-config-secrets:SecretString:google-oauth-client-secret}}
+                    DB_USER: {{resolve:secretsmanager:default/db-credentials:SecretString:username}}
+                    DB_PASSWORD: {{resolve:secretsmanager:default/db-credentials:SecretString:password}}
                     DB_ADDRESS: !Ref DbAddress
                     DB_PORT: !Ref DbPort
             FunctionName: !Ref ApplicationName
