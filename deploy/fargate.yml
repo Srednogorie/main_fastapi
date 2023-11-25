@@ -4,6 +4,15 @@ Parameters:
     Type: String
     Description: The VPC that the service is running inside of
     Default: vpc-c1ef9ca8
+  ApplicationName:
+    Type: String
+    Description: Name of the application. This is consistent across the stacks.
+  DbAddress:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/db/db-address
+  DbPort:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /default/db/db-port
   # PublicSubnetIds:
   #   Type: List<AWS::EC2::Subnet::Id>
   #   Description: List of public subnet ID's to put the load balancer and tasks in
