@@ -92,7 +92,7 @@ Resources:
               max-buffer-size: 25m
               awslogs-group: !Ref NginxLogGroup
               awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: !Sub "${ServiceName}/nginx"
+              awslogs-stream-prefix: !Sub "${ApplicationName}/nginx"
         # Application container
         - Name: app
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
@@ -103,7 +103,7 @@ Resources:
               max-buffer-size: 25m
               awslogs-group: !Ref AppLogGroup
               awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: !Sub "${ServiceName}/app"
+              awslogs-stream-prefix: !Sub "${ApplicationName}/app"
 
   # The service. The service is a resource which allows you to run multiple
   # copies of a type of task, and gather up their logs and metrics, as well
@@ -114,7 +114,7 @@ Resources:
     # the target group with the LB
     DependsOn: PublicLoadBalancerListener
     Properties:
-      ServiceName: !Ref ApplicationNamess
+      ServiceName: !Ref ApplicationName
       Cluster: !Ref ClusterName
       LaunchType: FARGATE
       NetworkConfiguration:
