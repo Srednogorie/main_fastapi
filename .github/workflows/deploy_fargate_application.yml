@@ -1,4 +1,4 @@
-name: Deploy Lambda Application
+name: Deploy Fargate Application
 
 on:
   workflow_dispatch:
