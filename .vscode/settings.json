@@ -34,5 +34,8 @@
             "database": "postgres",
             "username": "postgres"
         }
+    ],
+    "github-actions.workflows.pinned.workflows": [
+        ".github/workflows/deploy_fargate_application.yml"
     ]
 }

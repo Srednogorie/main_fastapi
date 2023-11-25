@@ -59,12 +59,12 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f deploy/nginx/Dockerfile
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG   
 
-    # - name: Deploy Lambda Cluster
-    #   id: lambda-cluster
-    #   uses: aws-actions/aws-cloudformation-github-deploy@master
-    #   with:
-    #     name: ${{ github.event.inputs.applicationName }}-lambda-cluster
-    #     template: deploy/lambda.yml
-    #     no-fail-on-empty-changeset: "1"
-    #     capabilities: CAPABILITY_NAMED_IAM
-    #     parameter-overrides: "file:///${{ github.workspace }}/deploy/parameters.json"
+    - name: Deploy Fargate Cluster
+      id: fargate-cluster
+      uses: aws-actions/aws-cloudformation-github-deploy@master
+      with:
+        name: ${{ github.event.inputs.applicationName }}-fargate-cluster
+        template: deploy/fargate.yml
+        no-fail-on-empty-changeset: "1"
+        capabilities: CAPABILITY_NAMED_IAM
+        parameter-overrides: "file:///${{ github.workspace }}/deploy/parameters.json"
