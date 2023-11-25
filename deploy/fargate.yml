@@ -10,13 +10,6 @@ Parameters:
   # ClusterName:
   #   Type: String
   #   Description: The name of the ECS cluster into which to launch capacity.
-  ECSTaskExecutionRole:
-    Type: String
-    Description: The role used to start up an ECS task
-  ServiceName:
-    Type: String
-    Default: web
-    Description: A name for the service
   ContainerCpu:
     Type: Number
     Default: 256
