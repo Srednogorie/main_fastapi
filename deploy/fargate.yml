@@ -177,7 +177,9 @@ Resources:
       LoadBalancerAttributes:
       - Key: idle_timeout.timeout_seconds
         Value: '30'
-      Subnets: [subnet-3cb7fc55, subnet-9e8de3e5]
+      Subnets: 
+        - subnet-3cb7fc55
+        - subnet-9e8de3e5
       # SecurityGroups:
       #   - !Ref PublicLoadBalancerSG
   PublicLoadBalancerListener:
