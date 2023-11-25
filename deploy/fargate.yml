@@ -115,14 +115,14 @@ Resources:
     DependsOn: PublicLoadBalancerListener
     Properties:
       ServiceName: !Ref ApplicationName
-      Cluster: !Ref ClusterName
+      Cluster: "change-me"
       LaunchType: FARGATE
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
           # SecurityGroups:
           #   - !Ref ServiceSecurityGroup
-          Subnets: !Ref PublicSubnetIds
+          # Subnets: !Ref PublicSubnetIds
       DeploymentConfiguration:
         MaximumPercent: 100
         MinimumHealthyPercent: 75
@@ -171,15 +171,15 @@ Resources:
         - CidrIp: 0.0.0.0/0
           IpProtocol: -1
   PublicLoadBalancer:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Type:     
     Properties:
       Scheme: internet-facing
       LoadBalancerAttributes:
       - Key: idle_timeout.timeout_seconds
         Value: '30'
-      Subnets: !Ref PublicSubnetIds
-      SecurityGroups:
-        - !Ref PublicLoadBalancerSG
+      # Subnets: !Ref   
+      # SecurityGroups:
+      #   - !Ref PublicLoadBalancerSG
   PublicLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -211,10 +211,10 @@ Resources:
   NginxLogGroup:
     Type: AWS::Logs::LogGroup
 
-Outputs:
-  ClusterName:
-    Description: The ECS cluster into which to launch resources
-    Value: !Ref ECSCluster
-  ECSTaskExecutionRole:
-    Description: The role used to start up a task
-    Value: !Ref ECSTaskExecutionRole
+# Outputs:
+#   ClusterName:
+#     Description: The ECS cluster into which to launch resources
+#     Value: !Ref ECSCluster
+#   ECSTaskExecutionRole:
+#     Description: The role used to start up a task
+#     Value: !Ref ECSTaskExecutionRole
