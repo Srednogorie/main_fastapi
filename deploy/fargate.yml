@@ -171,7 +171,7 @@ Resources:
         - CidrIp: 0.0.0.0/0
           IpProtocol: -1
   PublicLoadBalancer:
-    Type:     
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Scheme: internet-facing
       LoadBalancerAttributes:
