@@ -71,7 +71,7 @@ Resources:
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Ref ServiceName
+      Family: !Ref ApplicationName
       Cpu: !Ref ContainerCpu
       Memory: !Ref ContainerMemory
       NetworkMode: awsvpc
@@ -114,7 +114,7 @@ Resources:
     # the target group with the LB
     DependsOn: PublicLoadBalancerListener
     Properties:
-      ServiceName: !Ref ServiceName
+      ServiceName: !Ref ApplicationNamess
       Cluster: !Ref ClusterName
       LaunchType: FARGATE
       NetworkConfiguration:
