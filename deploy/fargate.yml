@@ -3,12 +3,13 @@ Parameters:
   VpcId:
     Type: String
     Description: The VPC that the service is running inside of
-  PublicSubnetIds:
-    Type: List<AWS::EC2::Subnet::Id>
-    Description: List of public subnet ID's to put the load balancer and tasks in
-  ClusterName:
-    Type: String
-    Description: The name of the ECS cluster into which to launch capacity.
+    Default: vpc-c1ef9ca8
+  # PublicSubnetIds:
+  #   Type: List<AWS::EC2::Subnet::Id>
+  #   Description: List of public subnet ID's to put the load balancer and tasks in
+  # ClusterName:
+  #   Type: String
+  #   Description: The name of the ECS cluster into which to launch capacity.
   ECSTaskExecutionRole:
     Type: String
     Description: The role used to start up an ECS task
@@ -16,20 +17,13 @@ Parameters:
     Type: String
     Default: web
     Description: A name for the service
-  AppImageUrl:
-    Type: String
-    Description: The url of a docker image that contains the application process that
-                 will handle the traffic for this service
-  NginxImageUrl:
-    Type: String
-    Description: The url of a docker image that provides the NGINX reverse proxy
   ContainerCpu:
     Type: Number
-    Default: 1024
+    Default: 256
     Description: How much CPU to give the container. 1024 is 1 CPU
   ContainerMemory:
     Type: Number
-    Default: 2048
+    Default: 512
     Description: How much memory in megabytes to give the container
   ContainerPort:
     Type: Number
@@ -85,7 +79,7 @@ Resources:
       ContainerDefinitions:
         # NGINX sidecar for the task
         - Name: nginx
-          Image: !Ref NginxImageUrl
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:nginx_latest"
           PortMappings:
             - ContainerPort: !Ref ContainerPort
               HostPort: !Ref ContainerPort
@@ -99,7 +93,7 @@ Resources:
               awslogs-stream-prefix: !Sub "${ServiceName}/nginx"
         # Application container
         - Name: app
-          Image: !Ref AppImageUrl
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
@@ -113,7 +107,7 @@ Resources:
   # copies of a type of task, and gather up their logs and metrics, as well
   # as monitor the number of running tasks and replace any that have crashed
   Service:
-    Type: AWS::ECS::Service
+    Type: 
     # Avoid race condition between ECS service creation and associating
     # the target group with the LB
     DependsOn: PublicLoadBalancerListener
@@ -124,8 +118,8 @@ Resources:
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
-          SecurityGroups:
-            - !Ref ServiceSecurityGroup
+          # SecurityGroups:
+          #   - !Ref ServiceSecurityGroup
           Subnets: !Ref PublicSubnetIds
       DeploymentConfiguration:
         MaximumPercent: 100
@@ -139,11 +133,11 @@ Resources:
 
   # Security group that limits network access
   # to the task
-  ServiceSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Security group for service
-      VpcId: !Ref VpcId
+  # ServiceSecurityGroup:
+  #   Type: AWS::EC2::SecurityGroup
+  #   Properties:
+  #     GroupDescription: Security group for service
+  #     VpcId: !Ref VpcId
 
   # Keeps track of the list of tasks for the service
   ServiceTargetGroup:
@@ -199,13 +193,13 @@ Resources:
 
   # Open up the service's security group to traffic originating
   # from the security group of the load balancer.
-  ServiceIngressfromLoadBalancer:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      Description: Ingress from the public ALB
-      GroupId: !Ref ServiceSecurityGroup
-      IpProtocol: -1
-      SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
+  # ServiceIngressfromLoadBalancer:
+  #   Type: AWS::EC2::SecurityGroupIngress
+  #   Properties:
+  #     Description: Ingress from the public ALB
+  #     GroupId: !Ref ServiceSecurityGroup
+  #     IpProtocol: -1
+  #     SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
 
   # This log group stores the stdout logs from the app
   AppLogGroup:
