@@ -15,4 +15,4 @@ RUN poetry install
 EXPOSE 80
 
 # Run the FastAPI application using uvicorn server
-CMD ["uvicorn", "app.main:app", "--host", "localhost", "--port", "80"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]

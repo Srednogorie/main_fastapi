@@ -33,7 +33,7 @@ Parameters:
     Description: What port that the application expects traffic on
   DesiredCount:
     Type: Number
-    Default: 1
+    Default: 2
     Description: How many copies of the service task to run
 
 Resources:
@@ -186,7 +186,7 @@ Resources:
       TargetType: ip
       Port: !Ref ContainerPort
       Protocol: HTTP
-      UnhealthyThresholdCount: 3
+      UnhealthyThresholdCount: 10
       VpcId: !Ref VpcId
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
@@ -199,7 +199,7 @@ Resources:
     Properties:
       GroupDescription: Access to the public facing load balancer
       VpcId: !Ref VpcId
-      SecurityGroupIngress:
+      SecurityGroupIngress: 
         # - IpProtocol: tcp
         #   FromPort: 80
         #   ToPort: 80
