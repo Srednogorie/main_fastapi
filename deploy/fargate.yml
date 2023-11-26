@@ -183,7 +183,7 @@ Resources:
       TargetType: ip
       Port: !Ref ContainerPort
       Protocol: HTTP
-      UnhealthyThresholdCount: 10
+      UnhealthyThresholdCount: 300
       VpcId: !Ref VpcId
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
@@ -210,8 +210,8 @@ Resources:
       Subnets: 
         - subnet-3cb7fc55
         - subnet-9e8de3e5
-      # SecurityGroups:
-      #   - !Ref PublicLoadBalancerSG
+      SecurityGroups:
+        - !Ref PublicLoadBalancerSG
   PublicLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
