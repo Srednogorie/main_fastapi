@@ -25,7 +25,8 @@ from .config.users import (
 )
 
 app = FastAPI()
-handler = Mangum(app)
+# TODO env variable dependent as it only serves lambda, probably the import too
+# handler = Mangum(app)
 database = get_db()
 
 # origins = ["http://localhost:3000"]
