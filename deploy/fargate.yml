@@ -183,7 +183,7 @@ Resources:
       TargetType: ip
       Port: !Ref ContainerPort
       Protocol: HTTP
-      UnhealthyThresholdCount: 300
+      UnhealthyThresholdCount: 10
       VpcId: !Ref VpcId
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
