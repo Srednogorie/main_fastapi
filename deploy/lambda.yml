@@ -10,6 +10,10 @@ Parameters:
   DbPort:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /default/db/db-port
+  EnvMode:
+    Type: String
+    Description: Used to conditionally initiate the Mangum handler
+    Default: lambda 
 
 Resources:
     LambdaFunction:
@@ -25,6 +29,7 @@ Resources:
                     DB_PASSWORD: "{{resolve:secretsmanager:default/db-credentials:SecretString:password}}"
                     DB_ADDRESS: !Ref DbAddress
                     DB_PORT: !Ref DbPort
+                    ENV_MODE: !Ref EnvMode
             FunctionName: !Ref ApplicationName
             Architectures:
               - "x86_64"
@@ -53,7 +58,7 @@ Resources:
         Properties:
             Name: !Ref LambdaFunction
             EndpointConfiguration:
-                Types: 
+                Types:
                   - "REGIONAL"
 
     ApiGatewayStage:

@@ -7,7 +7,6 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from starlette_csrf import CSRFMiddleware
-from mangum import Mangum
 
 from .models import User
 from fastapi.exceptions import HTTPException as StarletteHTTPException
@@ -25,8 +24,12 @@ from .config.users import (
 )
 
 app = FastAPI()
-# TODO env variable dependent as it only serves lambda, probably the import too
-# handler = Mangum(app)
+
+# If running in a Lambda function only
+if os.getenv("ENV_MODE") == "lambda":
+    from mangum import Mangum
+    handler = Mangum(app)
+
 database = get_db()
 
 # origins = ["http://localhost:3000"]
