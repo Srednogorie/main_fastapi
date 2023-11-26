@@ -183,7 +183,7 @@ Resources:
       TargetType: ip
       Port: !Ref ContainerPort
       Protocol: HTTP
-      UnhealthyThresholdCount: 10
+      UnhealthyThresholdCount: 3
       VpcId: !Ref VpcId
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
@@ -238,10 +238,20 @@ Resources:
   # This log group stores the stdout logs from the app
   AppLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      # LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
+      # Explicit retention time
+      RetentionInDays: 7
 
   # This log group stores the access logs from NGINX
   NginxLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      # LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
+      # Explicit retention time
+      RetentionInDays: 7
 
 # Outputs:
 #   ClusterName:
