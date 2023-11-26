@@ -108,7 +108,6 @@ Resources:
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
           PortMappings:
             - ContainerPort: !Ref ContainerPort
-              HostPort: !Ref ContainerPort
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
@@ -157,8 +156,8 @@ Resources:
             - subnet-3cb7fc55
             - subnet-9e8de3e5
       DeploymentConfiguration:
-        MaximumPercent: 100
-        MinimumHealthyPercent: 75
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
       DesiredCount: !Ref DesiredCount
       TaskDefinition: !Ref TaskDefinition
       LoadBalancers:
@@ -181,6 +180,7 @@ Resources:
       HealthCheckIntervalSeconds: 10
       HealthCheckPath: /
       HealthCheckProtocol: HTTP
+      HealthCheckPort: !Ref ContainerPort
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       TargetType: ip
