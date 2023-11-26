@@ -65,6 +65,15 @@ Resources:
       # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/security-iam-awsmanpol.html#security-iam-awsmanpol-AmazonECSTaskExecutionRolePolicy
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Policies:
+        - PolicyName: AllowSecretManager
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: AllowEcsToUseSecretManager
+                Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
 
   # The task definition. This is a simple metadata description of what
   # container(s) to run, and what resource requirements the task has
