@@ -66,6 +66,7 @@ Resources:
         Properties:
             DeploymentId: !Ref ApiGatewayDeployment
             RestApiId: !Ref ApiGatewayRestApi
+            StageName: v1
 
     ApiGatewayDeployment:
         Type: "AWS::ApiGateway::Deployment"
