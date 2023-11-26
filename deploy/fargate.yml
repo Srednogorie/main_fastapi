@@ -120,7 +120,7 @@ Resources:
               ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:default/app-config-secrets:google-oauth-client-secret"
             - Name: DB_USER
               ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:default/db-credentials:username"
-            - Name: DB_PASSWORD:
+            - Name: DB_PASSWORD
               ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:default/db-credentials:password"
 
   # The service. The service is a resource which allows you to run multiple
