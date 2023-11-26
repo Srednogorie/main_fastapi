@@ -227,13 +227,13 @@ Resources:
 
   # Open up the service's security group to traffic originating
   # from the security group of the load balancer.
-  # ServiceIngressfromLoadBalancer:
-  #   Type: AWS::EC2::SecurityGroupIngress
-  #   Properties:
-  #     Description: Ingress from the public ALB
-  #     GroupId: !Ref ServiceSecurityGroup
-  #     IpProtocol: -1
-  #     SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
+  ServiceIngressFromLoadBalancer:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress from the public ALB
+      GroupId: !Ref ServiceSecurityGroup
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
 
   # This log group stores the stdout logs from the app
   AppLogGroup:
