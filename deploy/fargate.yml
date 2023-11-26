@@ -103,8 +103,6 @@ Resources:
               awslogs-group: !Ref NginxLogGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: !Sub "${ApplicationName}/nginx"
-          Links:
-            - "app"
         # Application container
         - Name: app
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
