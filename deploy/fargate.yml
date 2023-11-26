@@ -106,6 +106,9 @@ Resources:
         # Application container
         - Name: app
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
+          PortMappings:
+            - ContainerPort: !Ref ContainerPort
+              HostPort: !Ref ContainerPort
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
