@@ -74,6 +74,7 @@ Resources:
                 Effect: Allow
                 Action:
                   - secretsmanager:GetSecretValue
+                Resource: "*"
 
   # The task definition. This is a simple metadata description of what
   # container(s) to run, and what resource requirements the task has
