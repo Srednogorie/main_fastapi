@@ -21,9 +21,13 @@ Parameters:
     Type: Number
     Default: 512
     Description: How much memory in megabytes to give the container
-  ContainerPort:
+  NginxContainerPort:
     Type: Number
     Default: 80
+    Description: What port Nginx expects traffic on
+  AppContainerPort:
+    Type: Number
+    Default: 8000
     Description: What port that the application expects traffic on
   DesiredCount:
     Type: Number
@@ -87,7 +91,7 @@ Resources:
         - Name: nginx
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:nginx_latest"
           PortMappings:
-            - ContainerPort: !Ref ContainerPort
+            - ContainerPort: !Ref NginxContainerPort
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
@@ -100,7 +104,7 @@ Resources:
         - Name: app
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
           PortMappings:
-            - ContainerPort: !Ref ContainerPort
+            - ContainerPort: !Ref AppContainerPort
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
@@ -155,7 +159,7 @@ Resources:
       TaskDefinition: !Ref TaskDefinition
       LoadBalancers:
         - ContainerName: nginx
-          ContainerPort: !Ref ContainerPort
+          ContainerPort: !Ref NginxContainerPort
           TargetGroupArn: !Ref ServiceTargetGroup
 
   # Security group that limits network access
@@ -173,11 +177,10 @@ Resources:
       HealthCheckIntervalSeconds: 10
       HealthCheckPath: /
       HealthCheckProtocol: HTTP
-      HealthCheckPort: !Ref ContainerPort
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       TargetType: ip
-      Port: !Ref ContainerPort
+      Port: !Ref NginxContainerPort
       Protocol: HTTP
       UnhealthyThresholdCount: 10
       VpcId: !Ref VpcId

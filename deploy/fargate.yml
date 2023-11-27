@@ -21,9 +21,9 @@ Parameters:
     Type: Number
     Default: 512
     Description: How much memory in megabytes to give the container
-  ContainerPort:
+  AppContainerPort:
     Type: Number
-    Default: 80
+    Default: 8000
     Description: What port that the application expects traffic on
   DesiredCount:
     Type: Number
@@ -87,7 +87,7 @@ Resources:
         - Name: app
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
           PortMappings:
-            - ContainerPort: !Ref ContainerPort
+            - ContainerPort: !Ref AppContainerPort
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
@@ -142,7 +142,7 @@ Resources:
       TaskDefinition: !Ref TaskDefinition
       LoadBalancers:
         - ContainerName: app
-          ContainerPort: !Ref ContainerPort
+          ContainerPort: !Ref AppContainerPort
           TargetGroupArn: !Ref ServiceTargetGroup
 
   # Security group that limits network access
@@ -160,11 +160,10 @@ Resources:
       HealthCheckIntervalSeconds: 10
       HealthCheckPath: /
       HealthCheckProtocol: HTTP
-      HealthCheckPort: !Ref ContainerPort
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       TargetType: ip
-      Port: !Ref ContainerPort
+      Port: !Ref AppContainerPort
       Protocol: HTTP
       UnhealthyThresholdCount: 10
       VpcId: !Ref VpcId
