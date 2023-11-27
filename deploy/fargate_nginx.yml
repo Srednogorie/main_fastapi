@@ -35,7 +35,7 @@ Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: "change-me"
+      ClusterName: !Sub ${ApplicationName}-cluster
 
   # This is a role which is used within Fargate to allow the Fargate agent
   # to download images, and upload logs.
@@ -88,7 +88,6 @@ Resources:
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:nginx_latest"
           PortMappings:
             - ContainerPort: !Ref ContainerPort
-              HostPort: !Ref ContainerPort
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
@@ -98,36 +97,36 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: !Sub "${ApplicationName}/nginx"
         # Application container
-        - Name: app
-          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
-          PortMappings:
-            - ContainerPort: !Ref ContainerPort
-          LogConfiguration:
-            LogDriver: 'awslogs'
-            Options:
-              mode: non-blocking
-              max-buffer-size: 25m
-              awslogs-group: !Ref AppLogGroup
-              awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: !Sub "${ApplicationName}/app"
-          Environment:
-            - Name: DB_ADDRESS
-              Value: !Ref DbAddress
-            - Name: DB_PORT
-              Value: !Ref DbPort
-          Secrets:
-            - Name: BREVO_API_KEY
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/app-config-secrets-uGKK9M:brevo-api-key::"
-            - Name: AUTH_VERIFICATION_SECRET
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/app-config-secrets-uGKK9M:auth-verification-secret::"
-            - Name: GOOGLE_OAUTH_CLIENT_ID
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/app-config-secrets-uGKK9M:google-oauth-client-id::"
-            - Name: GOOGLE_OAUTH_CLIENT_SECRET
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/app-config-secrets-uGKK9M:google-oauth-client-secret::"
-            - Name: DB_USER
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/db-credentials-Gt4V0F:username::"
-            - Name: DB_PASSWORD
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/db-credentials-Gt4V0F:password::"
+        # - Name: app
+        #   Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
+        #   PortMappings:
+        #     - ContainerPort: !Ref ContainerPort
+        #   LogConfiguration:
+        #     LogDriver: 'awslogs'
+        #     Options:
+        #       mode: non-blocking
+        #       max-buffer-size: 25m
+        #       awslogs-group: !Ref AppLogGroup
+        #       awslogs-region: !Ref AWS::Region
+        #       awslogs-stream-prefix: !Sub "${ApplicationName}/app"
+        #   Environment:
+        #     - Name: DB_ADDRESS
+        #       Value: !Ref DbAddress
+        #     - Name: DB_PORT
+        #       Value: !Ref DbPort
+        #   Secrets:
+        #     - Name: BREVO_API_KEY
+        #       ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/app-config-secrets-uGKK9M:brevo-api-key::"
+        #     - Name: AUTH_VERIFICATION_SECRET
+        #       ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/app-config-secrets-uGKK9M:auth-verification-secret::"
+        #     - Name: GOOGLE_OAUTH_CLIENT_ID
+        #       ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/app-config-secrets-uGKK9M:google-oauth-client-id::"
+        #     - Name: GOOGLE_OAUTH_CLIENT_SECRET
+        #       ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/app-config-secrets-uGKK9M:google-oauth-client-secret::"
+        #     - Name: DB_USER
+        #       ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/db-credentials-Gt4V0F:username::"
+        #     - Name: DB_PASSWORD
+        #       ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:default/db-credentials-Gt4V0F:password::"
 
   # The service. The service is a resource which allows you to run multiple
   # copies of a type of task, and gather up their logs and metrics, as well
@@ -139,7 +138,7 @@ Resources:
     DependsOn: PublicLoadBalancerListener
     Properties:
       ServiceName: !Ref ApplicationName
-      Cluster: "change-me"
+      Cluster: !Sub ${ApplicationName}-cluster
       LaunchType: FARGATE
       NetworkConfiguration:
         AwsvpcConfiguration:
@@ -242,15 +241,15 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      # LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
+      LogGroupName: !Sub "/aws/fargate/${ApplicationName}"
       # Explicit retention time
       RetentionInDays: 7
 
-  This log group stores the access logs from NGINX
+  # This log group stores the access logs from NGINX
   NginxLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      # LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
+      LogGroupName: !Sub "/aws/fargate/${ApplicationName}"
       # Explicit retention time
       RetentionInDays: 7
