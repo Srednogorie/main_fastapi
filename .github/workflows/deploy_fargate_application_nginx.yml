@@ -64,7 +64,7 @@ jobs:
       uses: aws-actions/aws-cloudformation-github-deploy@master
       with:
         name: ${{ github.event.inputs.applicationName }}-fargate-cluster
-        template: deploy/fargate.yml
+        template: deploy/fargate_nginx.yml
         no-fail-on-empty-changeset: "1"
         capabilities: CAPABILITY_NAMED_IAM
         parameter-overrides: "file:///${{ github.workspace }}/deploy/parameters.json"
