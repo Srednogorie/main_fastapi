@@ -154,7 +154,7 @@ Resources:
       DesiredCount: !Ref DesiredCount
       TaskDefinition: !Ref TaskDefinition
       LoadBalancers:
-        - ContainerName: app
+        - ContainerName: nginx
           ContainerPort: !Ref ContainerPort
           TargetGroupArn: !Ref ServiceTargetGroup
 
