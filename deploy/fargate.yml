@@ -25,6 +25,10 @@ Parameters:
     Type: Number
     Default: 8000
     Description: What port that the application expects traffic on
+  ListenerPort:
+    Type: Number
+    Default: 80
+    Description: What port that the load balancer listener expects traffic on
   DesiredCount:
     Type: Number
     Default: 2
@@ -211,7 +215,7 @@ Resources:
               - TargetGroupArn: !Ref ServiceTargetGroup
                 Weight: 100
       LoadBalancerArn: !Ref 'PublicLoadBalancer'
-      Port: 80
+      Port: !Ref ListenerPort
       Protocol: HTTP
 
   # Open up the service's security group to traffic originating
