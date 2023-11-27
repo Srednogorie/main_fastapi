@@ -3,6 +3,7 @@
         "asyncpg",
         "BREVO",
         "debugpy",
+        "Fargate",
         "fastapi",
         "httpx",
         "joinedload",

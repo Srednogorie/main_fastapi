@@ -13,6 +13,12 @@ Parameters:
   DbPort:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /default/db/db-port
+  # PublicSubnetIds:
+  #   Type: List<AWS::EC2::Subnet::Id>
+  #   Description: List of public subnet ID's to put the load balancer and tasks in
+  # ClusterName:
+  #   Type: String
+  #   Description: The name of the ECS cluster into which to launch capacity.
   ContainerCpu:
     Type: Number
     Default: 256
@@ -35,7 +41,7 @@ Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: !Sub ${ApplicationName}-cluster
+      ClusterName: "change-me"
 
   # This is a role which is used within Fargate to allow the Fargate agent
   # to download images, and upload logs.
@@ -83,6 +89,20 @@ Resources:
         - FARGATE
       ExecutionRoleArn: !Ref ECSTaskExecutionRole
       ContainerDefinitions:
+        # NGINX sidecar for the task
+        # - Name: nginx
+        #   Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:nginx_latest"
+        #   PortMappings:
+        #     - ContainerPort: !Ref ContainerPort
+        #       HostPort: !Ref ContainerPort
+        #   LogConfiguration:
+        #     LogDriver: 'awslogs'
+        #     Options:
+        #       mode: non-blocking
+        #       max-buffer-size: 25m
+        #       awslogs-group: !Ref NginxLogGroup
+        #       awslogs-region: !Ref AWS::Region
+        #       awslogs-stream-prefix: !Sub "${ApplicationName}/nginx"
         # Application container
         - Name: app
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ApplicationName}:latest"
@@ -180,17 +200,17 @@ Resources:
       GroupDescription: Access to the public facing load balancer
       VpcId: !Ref VpcId
       SecurityGroupIngress: 
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
+        # - IpProtocol: tcp
+        #   FromPort: 80
+        #   ToPort: 80
+        #   CidrIp: 0.0.0.0/0
+        # - IpProtocol: tcp
+        #   FromPort: 443
+        #   ToPort: 443
+        #   CidrIp: 0.0.0.0/0
         # Allow access to public facing ALB from any IP address
-        # - CidrIp: 0.0.0.0/0
-        #   IpProtocol: -1
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
   PublicLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -231,6 +251,23 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
+      # LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
       # Explicit retention time
       RetentionInDays: 7
+
+  # This log group stores the access logs from NGINX
+  # NginxLogGroup:
+  #   Type: AWS::Logs::LogGroup
+  #   DeletionPolicy: Delete
+  #   Properties:
+  #     # LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
+  #     # Explicit retention time
+  #     RetentionInDays: 7
+
+# Outputs:
+#   ClusterName:
+#     Description: The ECS cluster into which to launch resources
+#     Value: !Ref ECSCluster
+#   ECSTaskExecutionRole:
+#     Description: The role used to start up a task
+#     Value: !Ref ECSTaskExecutionRole

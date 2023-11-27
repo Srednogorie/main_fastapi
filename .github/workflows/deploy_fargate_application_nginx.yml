@@ -1,4 +1,4 @@
-name: Deploy Fargate Application
+name: Deploy Fargate Application Ngiinx
 
 on:
   workflow_dispatch:
@@ -48,6 +48,15 @@ jobs:
         IMAGE_TAG: latest
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f prod.fargate.Dockerfile
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Build, tag, and push the nginx image to ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ github.event.inputs.applicationName }}
+        IMAGE_TAG: nginx_latest
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f deploy/nginx/Dockerfile
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     - name: Deploy Fargate Cluster
