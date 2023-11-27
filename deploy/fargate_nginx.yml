@@ -241,7 +241,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub "/aws/fargate/${ApplicationName}"
+      LogGroupName: !Sub "/aws/fargate/${ApplicationName}-App"
       # Explicit retention time
       RetentionInDays: 7
 
@@ -250,6 +250,6 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub "/aws/fargate/${ApplicationName}"
+      LogGroupName: !Sub "/aws/fargate/${ApplicationName}-Nginx"
       # Explicit retention time
       RetentionInDays: 7
