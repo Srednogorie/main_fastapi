@@ -188,9 +188,7 @@ Resources:
           FromPort: 443
           ToPort: 443
           CidrIp: 0.0.0.0/0
-        # Allow access to public facing ALB from any IP address
-        # - CidrIp: 0.0.0.0/0
-        #   IpProtocol: -1
+
   PublicLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -203,6 +201,7 @@ Resources:
         - subnet-9e8de3e5
       SecurityGroups:
         - !Ref PublicLoadBalancerSG
+
   PublicLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -224,7 +223,7 @@ Resources:
       Description: Ingress from the public ALB
       GroupId: !Ref ServiceSecurityGroup
       IpProtocol: -1
-      SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
+      SourceSecurityGroupName: !Ref 'PublicLoadBalancerSG'
 
   # This log group stores the stdout logs from the app
   AppLogGroup:
