@@ -35,7 +35,8 @@ Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: !Sub ${ApplicationName}-cluster
+      ClusterName: change-me
+      # ClusterName: !Sub ${ApplicationName}-cluster
 
   # This is a role which is used within Fargate to allow the Fargate agent
   # to download images, and upload logs.
