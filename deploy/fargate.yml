@@ -231,6 +231,6 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub "/aws/lambda/${LambdaFunction}"
+      LogGroupName: !Sub "/aws/fargate/${ApplicationName}"
       # Explicit retention time
       RetentionInDays: 7
