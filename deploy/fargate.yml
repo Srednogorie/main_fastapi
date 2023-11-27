@@ -223,7 +223,7 @@ Resources:
       Description: Ingress from the public ALB
       GroupId: !Ref ServiceSecurityGroup
       IpProtocol: -1
-      SourceSecurityGroupName: !Ref 'PublicLoadBalancerSG'
+      SourceSecurityGroupId: !GetAtt 'PublicLoadBalancerSG.GroupId'
 
   # This log group stores the stdout logs from the app
   AppLogGroup:
