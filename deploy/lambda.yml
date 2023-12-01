@@ -16,7 +16,6 @@ Parameters:
     Default: lambda 
 
 Resources:
-    # paca
     LambdaFunction:
         Type: "AWS::Lambda::Function"
         Properties:
