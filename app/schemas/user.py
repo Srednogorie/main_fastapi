@@ -12,14 +12,14 @@ class UserReadRegister(BaseModel):
     id: models.ID
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserCreate(schemas.BaseUserCreate):
     confirm_password: str
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "email": "sash@gmail.com",
                 "password": "",
