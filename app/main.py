@@ -2,26 +2,28 @@ import os
 import re
 from typing import Annotated
 
-from fastapi import FastAPI, Depends, Request
+from fastapi import Depends, FastAPI, Request
+from fastapi.exceptions import HTTPException as StarletteHTTPException
 from fastapi.exceptions import RequestValidationError
-from fastapi.middleware.cors import CORSMiddleware
-
 from starlette_csrf import CSRFMiddleware
 
-from .models import User
-from fastapi.exceptions import HTTPException as StarletteHTTPException
-
 from .config.database import get_db
-from .schemas.user import UserRead, UserCreate, UserUpdate, UserReadRegister
-from .utils.app_exceptions import AppExceptionCase, app_exception_handler
-from .utils.request_exceptions import http_exception_handler, request_validation_exception_handler
 from .config.users import (
-    fastapi_users,
     cookie_auth_backend,
-    google_oauth_client,
+    current_active_user,
+    fastapi_users,
     google_cookie_auth_backend,
-    current_active_user
+    google_oauth_client
 )
+from .models import User
+from .schemas.user import UserCreate, UserRead, UserReadRegister, UserUpdate
+from .utils.app_exceptions import AppExceptionCase, app_exception_handler
+from .utils.request_exceptions import (
+    http_exception_handler,
+    request_validation_exception_handler
+)
+
+# from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -68,7 +70,9 @@ async def custom_app_exception_handler(request, e):
 
 # User routers
 app.include_router(
-    fastapi_users.get_auth_router(cookie_auth_backend, requires_verification=True),
+    fastapi_users.get_auth_router(
+        cookie_auth_backend, requires_verification=True
+    ),
     prefix="/auth/cookie",
     tags=["cookie_auth"]
 )
@@ -100,12 +104,15 @@ app.include_router(
     tags=["reset"],
 )
 app.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate, requires_verification=True),
+    fastapi_users.get_users_router(
+        UserRead, UserUpdate, requires_verification=True
+    ),
     prefix="/users",
     tags=["users"],
 )
 
 CurrentActiveUser = Annotated[User, Depends(current_active_user)]
+
 
 @app.get("/")
 async def root(request: Request):

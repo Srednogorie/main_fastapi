@@ -30,7 +30,10 @@ class UserCreate(schemas.BaseUserCreate):
     @model_validator(mode="after")
     def check_passwords_match(cls, values):
         pw1 = values.get('password') if values.get('password') else None
-        pw2 = values.get('confirm_password') if values.get('confirm_password') else None
+        pw2 = (
+            values.get('confirm_password') if
+            values.get('confirm_password') else None
+        )
         if pw1 is None or pw2 is None or pw1 != pw2:
             raise ValueError('passwords do not match')
         values.pop('confirm_password')

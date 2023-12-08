@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    
   development:
     build:
       context: .
@@ -27,6 +35,8 @@ services:
     tty: true
     stdin_open: true
     entrypoint: [""]
+    depends_on:
+      - postgres
 
 secrets:
   key:

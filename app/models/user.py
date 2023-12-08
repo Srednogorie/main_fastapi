@@ -1,17 +1,17 @@
 from fastapi import Depends
 from fastapi_users.db import (
-    SQLAlchemyUserDatabase,
+    SQLAlchemyBaseOAuthAccountTableUUID,
     SQLAlchemyBaseUserTableUUID,
-    SQLAlchemyBaseOAuthAccountTableUUID
+    SQLAlchemyUserDatabase
 )
 from fastapi_users_db_sqlalchemy.access_token import (
-    SQLAlchemyBaseAccessTokenTableUUID, SQLAlchemyAccessTokenDatabase
+    SQLAlchemyAccessTokenDatabase, SQLAlchemyBaseAccessTokenTableUUID
 )
 from sqlalchemy import Column, String
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship
 
-from app.config.database import mapper_registry, get_db
+from app.config.database import get_db, mapper_registry
 from app.models.base import CreatedUpdateBase
 
 
@@ -23,7 +23,9 @@ class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID):
 @mapper_registry.mapped
 class User(SQLAlchemyBaseUserTableUUID, CreatedUpdateBase):
     username = Column(String)
-    oauth_accounts: list[OAuthAccount] = relationship("OAuthAccount", lazy="joined")
+    oauth_accounts: list[OAuthAccount] = relationship(
+        "OAuthAccount", lazy="joined"
+    )
 
     __allow_unmapped__ = True
 

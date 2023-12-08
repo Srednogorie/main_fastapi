@@ -8,10 +8,15 @@ db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
 db_address = os.getenv("DB_ADDRESS")
 db_port = os.getenv("DB_PORT")
-DATABASE_URL = f"postgresql+asyncpg://{db_user}:{db_password}@{db_address}:{db_port}/{settings.app_name}"
+DATABASE_URL = (
+    f"postgresql+asyncpg://{db_user}:{db_password}"
+    f"@{db_address}:{db_port}/{settings.app_name}"
+)
 
 engine = create_async_engine(DATABASE_URL, future=True)
-async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+async_session = sessionmaker(
+    engine, expire_on_commit=False, class_=AsyncSession
+)
 
 mapper_registry = registry()
 
