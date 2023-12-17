@@ -1,4 +1,6 @@
 import os
+
+from sqlalchemy import MetaData
 from app import settings
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -18,7 +20,17 @@ async_session = sessionmaker(
     engine, expire_on_commit=False, class_=AsyncSession
 )
 
-mapper_registry = registry()
+mapper_registry = registry(
+    metadata=MetaData(
+        naming_convention={
+            "ix": "ix_%(column_0_label)s",
+            "uq": "uq_%(table_name)s_%(column_0_name)s",
+            "ck": "ck_%(table_name)s_%(constraint_name)s",
+            "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",  # noqa
+            "pk": "pk_%(table_name)s",
+        }
+    )
+)
 
 
 async def get_db():
