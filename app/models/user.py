@@ -24,7 +24,7 @@ class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID):
 class User(SQLAlchemyBaseUserTableUUID, CreatedUpdateBase):
     username = Column(String)
     oauth_accounts: list[OAuthAccount] = relationship(
-        "OAuthAccount", lazy="joined", innerjoin=True
+        "OAuthAccount", lazy="joined"
     )
 
     __allow_unmapped__ = True
